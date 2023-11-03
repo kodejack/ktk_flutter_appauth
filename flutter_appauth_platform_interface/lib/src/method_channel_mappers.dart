@@ -7,9 +7,20 @@ import 'end_session_request.dart';
 import 'grant_types.dart';
 import 'token_request.dart';
 
+Map<String, Object?> _convertAuthorizationParametersToMap(
+    AuthorizationParameters authorizationParameters) {
+  return <String, Object?>{
+    'loginHint': authorizationParameters.loginHint,
+    'promptValues': authorizationParameters.promptValues,
+    'preferEphemeralSession': authorizationParameters.preferEphemeralSession,
+    'responseMode': authorizationParameters.responseMode,
+  };
+}
+
 Map<String, Object?> _convertCommonRequestDetailsToMap(
     CommonRequestDetails commonRequestDetails) {
   return <String, Object?>{
+    'responseType': commonRequestDetails.responseType,
     'clientId': commonRequestDetails.clientId,
     'issuer': commonRequestDetails.issuer,
     'nonce': commonRequestDetails.nonce,
@@ -20,53 +31,6 @@ Map<String, Object?> _convertCommonRequestDetailsToMap(
     'additionalParameters': commonRequestDetails.additionalParameters,
     'allowInsecureConnections': commonRequestDetails.allowInsecureConnections,
   };
-}
-
-extension EndSessionRequestMapper on EndSessionRequest {
-  Map<String, Object?> toMap() {
-    return <String, Object?>{
-      'idTokenHint': idTokenHint,
-      'postLogoutRedirectUrl': postLogoutRedirectUrl,
-      'state': state,
-      'allowInsecureConnections': allowInsecureConnections,
-      'additionalParameters': additionalParameters,
-      'issuer': issuer,
-      'discoveryUrl': discoveryUrl,
-      'serviceConfiguration': serviceConfiguration?.toMap(),
-      'preferEphemeralSession': preferEphemeralSession,
-    };
-  }
-}
-
-extension AuthorizationRequestParameters on AuthorizationRequest {
-  Map<String, Object?> toMap() {
-    return _convertAuthorizationParametersToMap(this)
-      ..addAll(_convertCommonRequestDetailsToMap(this));
-  }
-}
-
-extension AuthorizationServiceConfigurationMapper
-    on AuthorizationServiceConfiguration {
-  Map<String, Object?> toMap() {
-    return <String, Object?>{
-      'tokenEndpoint': tokenEndpoint,
-      'authorizationEndpoint': authorizationEndpoint,
-      'endSessionEndpoint': endSessionEndpoint,
-    };
-  }
-}
-
-extension TokenRequestMapper on TokenRequest {
-  Map<String, Object?> toMap() {
-    return _convertTokenRequestToMap(this);
-  }
-}
-
-extension AuthorizationTokenRequestMapper on AuthorizationTokenRequest {
-  Map<String, Object?> toMap() {
-    return _convertTokenRequestToMap(this)
-      ..addAll(_convertAuthorizationParametersToMap(this));
-  }
 }
 
 Map<String, Object?> _convertTokenRequestToMap(TokenRequest tokenRequest) {
@@ -94,12 +58,49 @@ String? _inferGrantType(TokenRequest tokenRequest) {
       null, 'grantType', 'Grant type not specified and cannot be inferred');
 }
 
-Map<String, Object?> _convertAuthorizationParametersToMap(
-    AuthorizationParameters authorizationParameters) {
-  return <String, Object?>{
-    'loginHint': authorizationParameters.loginHint,
-    'promptValues': authorizationParameters.promptValues,
-    'preferEphemeralSession': authorizationParameters.preferEphemeralSession,
-    'responseMode': authorizationParameters.responseMode,
-  };
+extension AuthorizationRequestParameters on AuthorizationRequest {
+  Map<String, Object?> toMap() {
+    return _convertAuthorizationParametersToMap(this)
+      ..addAll(_convertCommonRequestDetailsToMap(this));
+  }
+}
+
+extension AuthorizationServiceConfigurationMapper
+    on AuthorizationServiceConfiguration {
+  Map<String, Object?> toMap() {
+    return <String, Object?>{
+      'tokenEndpoint': tokenEndpoint,
+      'authorizationEndpoint': authorizationEndpoint,
+      'endSessionEndpoint': endSessionEndpoint,
+    };
+  }
+}
+
+extension AuthorizationTokenRequestMapper on AuthorizationTokenRequest {
+  Map<String, Object?> toMap() {
+    return _convertTokenRequestToMap(this)
+      ..addAll(_convertAuthorizationParametersToMap(this));
+  }
+}
+
+extension EndSessionRequestMapper on EndSessionRequest {
+  Map<String, Object?> toMap() {
+    return <String, Object?>{
+      'idTokenHint': idTokenHint,
+      'postLogoutRedirectUrl': postLogoutRedirectUrl,
+      'state': state,
+      'allowInsecureConnections': allowInsecureConnections,
+      'additionalParameters': additionalParameters,
+      'issuer': issuer,
+      'discoveryUrl': discoveryUrl,
+      'serviceConfiguration': serviceConfiguration?.toMap(),
+      'preferEphemeralSession': preferEphemeralSession,
+    };
+  }
+}
+
+extension TokenRequestMapper on TokenRequest {
+  Map<String, Object?> toMap() {
+    return _convertTokenRequestToMap(this);
+  }
 }

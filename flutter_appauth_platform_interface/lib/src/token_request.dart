@@ -3,34 +3,6 @@ import 'common_request_details.dart';
 
 /// Details for a token exchange request.
 class TokenRequest extends CommonRequestDetails {
-  TokenRequest(
-    String clientId,
-    String redirectUrl, {
-    this.clientSecret,
-    List<String>? scopes,
-    String? issuer,
-    String? discoveryUrl,
-    AuthorizationServiceConfiguration? serviceConfiguration,
-    Map<String, String>? additionalParameters,
-    String? nonce,
-    this.refreshToken,
-    this.grantType,
-    this.authorizationCode,
-    this.codeVerifier,
-    bool allowInsecureConnections = false,
-  }) {
-    this.clientId = clientId;
-    this.redirectUrl = redirectUrl;
-    this.scopes = scopes;
-    this.serviceConfiguration = serviceConfiguration;
-    this.additionalParameters = additionalParameters;
-    this.nonce = nonce;
-    this.issuer = issuer;
-    this.discoveryUrl = discoveryUrl;
-    this.allowInsecureConnections = allowInsecureConnections;
-    assertConfigurationInfo();
-  }
-
   /// The client secret.
   final String? clientSecret;
 
@@ -49,4 +21,34 @@ class TokenRequest extends CommonRequestDetails {
   /// The code verifier to be sent with the authorization code. This should
   /// match the code verifier used when performing the authorization request
   final String? codeVerifier;
+
+  TokenRequest(
+    String responseType,
+    String clientId,
+    String redirectUrl, {
+    this.clientSecret,
+    List<String>? scopes,
+    String? issuer,
+    String? discoveryUrl,
+    AuthorizationServiceConfiguration? serviceConfiguration,
+    Map<String, String>? additionalParameters,
+    String? nonce,
+    this.refreshToken,
+    this.grantType,
+    this.authorizationCode,
+    this.codeVerifier,
+    bool allowInsecureConnections = false,
+  }) {
+    this.responseType = responseType;
+    this.clientId = clientId;
+    this.redirectUrl = redirectUrl;
+    this.scopes = scopes;
+    this.serviceConfiguration = serviceConfiguration;
+    this.additionalParameters = additionalParameters;
+    this.nonce = nonce;
+    this.issuer = issuer;
+    this.discoveryUrl = discoveryUrl;
+    this.allowInsecureConnections = allowInsecureConnections;
+    assertConfigurationInfo();
+  }
 }

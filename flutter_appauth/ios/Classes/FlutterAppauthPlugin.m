@@ -15,6 +15,7 @@
 @end
 
 @interface TokenRequestParameters : NSObject
+@property(nonatomic, strong) NSString *responseType;
 @property(nonatomic, strong) NSString *clientId;
 @property(nonatomic, strong) NSString *clientSecret;
 @property(nonatomic, strong) NSString *issuer;
@@ -34,6 +35,7 @@
 
 @implementation TokenRequestParameters
 - (void)processArguments:(NSDictionary *)arguments {
+    _responseType = [ArgumentProcessor processArgumentValue:arguments withKey:@"responseType"];
     _clientId = [ArgumentProcessor processArgumentValue:arguments withKey:@"clientId"];
     _clientSecret = [ArgumentProcessor processArgumentValue:arguments withKey:@"clientSecret"];
     _issuer = [ArgumentProcessor processArgumentValue:arguments withKey:@"issuer"];
@@ -149,7 +151,7 @@ AppAuthAuthorization* authorization;
 
     if(requestParameters.serviceConfigurationParameters != nil) {
         OIDServiceConfiguration *serviceConfiguration = [self processServiceConfigurationParameters:requestParameters.serviceConfigurationParameters];
-        _currentAuthorizationFlow = [authorization performAuthorization:serviceConfiguration clientId:requestParameters.clientId clientSecret:requestParameters.clientSecret scopes:requestParameters.scopes redirectUrl:requestParameters.redirectUrl additionalParameters:requestParameters.additionalParameters preferEphemeralSession:requestParameters.preferEphemeralSession result:result exchangeCode:exchangeCode nonce:requestParameters.nonce];
+        _currentAuthorizationFlow = [authorization performAuthorization:serviceConfiguration responseType:requestParameters.responseType clientId:requestParameters.clientId clientSecret:requestParameters.clientSecret scopes:requestParameters.scopes redirectUrl:requestParameters.redirectUrl additionalParameters:requestParameters.additionalParameters preferEphemeralSession:requestParameters.preferEphemeralSession result:result exchangeCode:exchangeCode nonce:requestParameters.nonce];
     } else if (requestParameters.discoveryUrl) {
         NSURL *discoveryUrl = [NSURL URLWithString:requestParameters.discoveryUrl];
         [OIDAuthorizationService discoverServiceConfigurationForDiscoveryURL:discoveryUrl
@@ -161,7 +163,7 @@ AppAuthAuthorization* authorization;
                 return;
             }
 
-            self->_currentAuthorizationFlow = [authorization performAuthorization:configuration clientId:requestParameters.clientId clientSecret:requestParameters.clientSecret scopes:requestParameters.scopes redirectUrl:requestParameters.redirectUrl additionalParameters:requestParameters.additionalParameters preferEphemeralSession:requestParameters.preferEphemeralSession result:result exchangeCode:exchangeCode nonce:requestParameters.nonce];
+            self->_currentAuthorizationFlow = [authorization performAuthorization:configuration responseType:requestParameters.responseType clientId:requestParameters.clientId clientSecret:requestParameters.clientSecret scopes:requestParameters.scopes redirectUrl:requestParameters.redirectUrl additionalParameters:requestParameters.additionalParameters preferEphemeralSession:requestParameters.preferEphemeralSession result:result exchangeCode:exchangeCode nonce:requestParameters.nonce];
         }];
     } else {
         NSURL *issuerUrl = [NSURL URLWithString:requestParameters.issuer];
@@ -174,7 +176,7 @@ AppAuthAuthorization* authorization;
                 return;
             }
 
-            self->_currentAuthorizationFlow = [authorization performAuthorization:configuration clientId:requestParameters.clientId clientSecret:requestParameters.clientSecret scopes:requestParameters.scopes redirectUrl:requestParameters.redirectUrl additionalParameters:requestParameters.additionalParameters preferEphemeralSession:requestParameters.preferEphemeralSession result:result exchangeCode:exchangeCode nonce:requestParameters.nonce];
+            self->_currentAuthorizationFlow = [authorization performAuthorization:configuration responseType:requestParameters.responseType clientId:requestParameters.clientId clientSecret:requestParameters.clientSecret scopes:requestParameters.scopes redirectUrl:requestParameters.redirectUrl additionalParameters:requestParameters.additionalParameters preferEphemeralSession:requestParameters.preferEphemeralSession result:result exchangeCode:exchangeCode nonce:requestParameters.nonce];
         }];
     }
 }

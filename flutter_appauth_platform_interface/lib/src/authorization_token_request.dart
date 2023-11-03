@@ -7,6 +7,7 @@ import 'token_request.dart';
 class AuthorizationTokenRequest extends TokenRequest
     with AuthorizationParameters {
   AuthorizationTokenRequest(
+    String responseType,
     String clientId,
     String redirectUrl, {
     String? loginHint,
@@ -22,6 +23,7 @@ class AuthorizationTokenRequest extends TokenRequest
     String? nonce,
     String? responseMode,
   }) : super(
+          responseType,
           clientId,
           redirectUrl,
           clientSecret: clientSecret,

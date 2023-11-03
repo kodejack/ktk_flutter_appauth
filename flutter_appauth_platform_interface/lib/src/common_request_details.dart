@@ -2,6 +2,9 @@ import 'accepted_authorization_service_configuration_details.dart';
 
 class CommonRequestDetails
     with AcceptedAuthorizationServiceConfigurationDetails {
+  /// The response type.
+  late String responseType;
+
   /// The client id.
   late String clientId;
 

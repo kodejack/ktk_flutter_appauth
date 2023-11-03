@@ -6,6 +6,7 @@ import 'common_request_details.dart';
 class AuthorizationRequest extends CommonRequestDetails
     with AuthorizationParameters {
   AuthorizationRequest(
+    String responseType,
     String clientId,
     String redirectUrl, {
     String? issuer,
@@ -20,6 +21,7 @@ class AuthorizationRequest extends CommonRequestDetails
     String? nonce,
     String? responseMode,
   }) {
+    this.responseType = responseType;
     this.clientId = clientId;
     this.redirectUrl = redirectUrl;
     this.scopes = scopes;
